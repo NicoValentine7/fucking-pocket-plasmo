@@ -1,28 +1,42 @@
-import { useState } from "react"
+import { useState } from "react";
+import { Button, Modal } from "@mantine/core";
 
 function IndexPopup() {
-  const [data, setData] = useState("")
+  const [opened, setOpened] = useState(false);
+
+  const savePageInfo = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const tab = tabs[0];
+      const pageInfo = {
+        title: tab.title,
+        url: tab.url,
+        favicon: tab.favIconUrl,
+        timestamp: new Date().toISOString(),
+      };
+
+      const savedPages = JSON.parse(localStorage.getItem("savedPages") || "[]");
+      savedPages.push(pageInfo);
+      localStorage.setItem("savedPages", JSON.stringify(savedPages));
+
+      setOpened(true);
+    });
+  };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        padding: 16
-      }}>
-      <h2>
-        Welcome to your{" "}
-        <a href="https://www.plasmo.com" target="_blank">
-          Plasmo
-        </a>{" "}
-        Extension!
-      </h2>
-      <input onChange={(e) => setData(e.target.value)} value={data} />
-      <a href="https://docs.plasmo.com" target="_blank">
-        View Docs
-      </a>
-    </div>
-  )
+    <>
+      <Button onClick={savePageInfo}>Save</Button>
+      <Modal
+        title="Save Successed"
+        opened={opened}
+        onClose={() => setOpened(false)}
+      >
+        <div style={{ padding: 20 }}>
+          <p>Save Successed</p>
+          <Button onClick={() => setOpened(false)}>Close</Button>
+        </div>
+      </Modal>
+    </>
+  );
 }
 
-export default IndexPopup
+export default IndexPopup;
