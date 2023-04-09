@@ -1,3 +1,8 @@
+export {}
+console.log(
+  "Plasmo!!!!!!!"
+)
+
 const addButton = document.createElement("button");
 addButton.textContent = "+";
 addButton.style.position = "fixed";

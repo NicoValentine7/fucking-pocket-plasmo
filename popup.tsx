@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Modal } from "@mantine/core";
-import { useSavedPages } from "../hooks/useSavedPages";
-import { PageList } from "./PageList";
+import { useSavedPages } from "./src/hooks/useSavedPages";
+import { PageList } from "./src/components/PageList";
 
 function IndexPopup() {
   const [opened, setOpened] = useState(false);
